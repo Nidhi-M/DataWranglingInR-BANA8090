@@ -134,51 +134,13 @@ print(a)</code></pre>
 <pre class="r"><code>b &lt;- 3333/222
 print(b)</code></pre>
 <pre><code>## [1] 15.01351</code></pre>
-<p>At higher value of n, the equation (1 + <span class="math inline">\(\frac(1}{n}\)</span>)^{n} remains constant</p>
-<pre class="r"><code>i &lt;- 1; d &lt;- list()
-for (n in seq( 10000000,.Machine$integer.max, by=10000000))
-{
-  c &lt;- (1+1/n)**n
-  ##cat(sprintf(&quot;%f -  %f \n&quot;, c , n))
-  d[[i]] &lt;-  (1+1/n)**n
-  i = i+1
-}
-head(d)</code></pre>
-<pre><code>## [[1]]
-## [1] 2.718282
-## 
-## [[2]]
-## [1] 2.718282
-## 
-## [[3]]
-## [1] 2.718282
-## 
-## [[4]]
-## [1] 2.718282
-## 
-## [[5]]
-## [1] 2.718282
-## 
-## [[6]]
-## [1] 2.718282</code></pre>
-<pre class="r"><code>tail(d)</code></pre>
-<pre><code>## [[1]]
-## [1] 2.718281
-## 
-## [[2]]
-## [1] 2.718282
-## 
-## [[3]]
-## [1] 2.718281
-## 
-## [[4]]
-## [1] 2.718281
-## 
-## [[5]]
-## [1] 2.718282
-## 
-## [[6]]
-## [1] 2.718282</code></pre>
+<p>At higher value of n, the equation <span class="math inline">\((1 + \frac{1}{n} )^{n}\)</span> remains constant</p>
+<pre class="r"><code>vector &lt;- seq( 10000000,.Machine$integer.max, by=10000000)
+c &lt;- (1+1/vector)**vector
+head(c)</code></pre>
+<pre><code>## [1] 2.718282 2.718282 2.718282 2.718282 2.718282 2.718282</code></pre>
+<pre class="r"><code>tail(c)</code></pre>
+<pre><code>## [1] 2.718281 2.718282 2.718281 2.718281 2.718282 2.718282</code></pre>
 </div>
 <div id="calculating-the-economic-order-quantity-eoq-at-annual-demand-of-1000-fixed-cost-of-5-per-order-and-0.25-as-holding-cost" class="section level5">
 <h5>Calculating the Economic Order Quantity (EOQ) at annual demand of 1000, fixed cost of 5 per order and 0.25 as holding cost</h5>

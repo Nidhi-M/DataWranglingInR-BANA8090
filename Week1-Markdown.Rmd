@@ -25,18 +25,13 @@ print(a)
 b <- 3333/222
 print(b)
 ```
-At higher value of n, the equation (1 + $\frac(1}{n}$)^{n} remains constant
+At higher value of n, the equation $(1 + \frac{1}{n} )^{n}$ remains constant
+
 ```{r}
-i <- 1; d <- list()
-for (n in seq( 10000000,.Machine$integer.max, by=10000000))
-{
-  c <- (1+1/n)**n
-  ##cat(sprintf("%f -  %f \n", c , n))
-  d[[i]] <-  (1+1/n)**n
-  i = i+1
-}
-head(d)
-tail(d)
+vector <- seq( 10000000,.Machine$integer.max, by=10000000)
+c <- (1+1/vector)**vector
+head(c)
+tail(c)
 ```
 #####Calculating the Economic Order Quantity (EOQ) at annual demand of 1000, fixed cost of 5 per order and 0.25 as holding cost 
 ```{r}
