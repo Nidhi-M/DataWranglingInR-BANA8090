@@ -1,0 +1,54 @@
+---
+title: "Week1-Markdown"
+author: "Nidhi-M"
+date: "October 14, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+   
+     
+     
+###About Me 
+
+Born and brought up in Bombay. After completing Engineering from V.J.T.I., I worked at CitiusTech as a Software Engineer for 2 years. An inclination to learn more about tools and tactics used to derive answers from data, motivated me to pursue MS in Business Analytics from the University of Cincinnati. I took up Data Science Specialization offered on Coursera, where I got introduced to R. Have majorly worked on ELK stack and  MS-SQL 
+  
+  
+#####Some R-code is attached as second part of the assignment
+```{r}
+a <- 100*(1+ (0.05/12)**24)
+print(a)
+
+b <- 3333/222
+print(b)
+```
+At higher value of n, the equation (1 + $\frac(1}{n}$)^{n} remains constant
+```{r}
+i <- 1; d <- list()
+for (n in seq( 10000000,.Machine$integer.max, by=10000000))
+{
+  c <- (1+1/n)**n
+  ##cat(sprintf("%f -  %f \n", c , n))
+  d[[i]] <-  (1+1/n)**n
+  i = i+1
+}
+head(d)
+tail(d)
+```
+#####Calculating the Economic Order Quantity (EOQ) at annual demand of 1000, fixed cost of 5 per order and 0.25 as holding cost 
+```{r}
+D <-  1000;K <- 5;h <- 0.25;Q <- sqrt(2*D*K/h)
+print(Q)
+```
+  
+  
+#####Calculating the final value of the deposit, whose principle amount is 100, at rate of 0.08 for 3 years with 12 payments every year
+```{r}
+P <- 100;r <- 0.08;n <- 12;t <- 3;
+F <- P*((1+(r/n))**(n*t))
+print(F)
+```
+
