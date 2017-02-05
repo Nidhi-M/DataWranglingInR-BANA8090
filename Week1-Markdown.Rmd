@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
      
 ###About Me 
 
-Born and brought up in Bombay. After completing Engineering from V.J.T.I., I worked at CitiusTech as a Software Engineer for 2 years. An inclination to learn more about tools and tactics used to derive answers from data, motivated me to pursue MS in Business Analytics from the University of Cincinnati. I took up Data Science Specialization offered on Coursera, where I got introduced to R. Have majorly worked on ELK stack and  MS-SQL 
+I was born and brought up in Bombay (Mumbai). After completing Engineering from V.J.T.I., I worked at CitiusTech as a Software Engineer for 2 years, majorly working on MS-SQL, Elasticsearch for helping various projects for performance optimization on an application by analyzing humongous data. An inclination to learn more about tools and tactics used to derive answers from data, motivated me to pursue career in Analytics. In order to come out of comfort zone both personally and proffessionaly I accepted an admission to MS in Business Analytics program from the University of Cincinnati. 
   
   
 #####Some R-code is attached as second part of the assignment
