@@ -1,0 +1,83 @@
+---
+title: "Week 5"
+author: "Nidhi-M"
+date: "November 12, 2016"
+output: html_document
+---
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tidyr)
+
+#Question 1 
+Wide_Bomber <- readRDS("data/bomber_wide.rds")
+#class(Wide_Bomber)
+Wide_Bomber <- as_tibble(Wide_Bomber)
+Wide_Bomber =Wide_Bomber %>% gather( `1996` : `2014`,key = "year", value="FH")
+head(Wide_Bomber)
+
+#Question 2
+Long_Bomber <- readRDS("data/bomber_long.rds")
+#class(Long_Bomber)
+Long_Bomber <- as_tibble(Long_Bomber)
+Long_Bomber <- Long_Bomber %>% spread(key="Output", value="Value") %>% as_tibble
+head(Long_Bomber)
+
+#Question3
+Combined_Bomber <- readRDS("data/bomber_combined.rds")
+#class(Combined_Bomber)
+head(Combined_Bomber)
+Combined_Bomber <-  Combined_Bomber %>% separate(AC, into = c("Type","MD"), sep = " ") %>% as_tibble()
+head(Combined_Bomber)
+
+#Question4
+Prefix_Bomber <- readRDS("data/bomber_prefix.rds")
+#class(Prefix_Bomber)
+head(Prefix_Bomber)
+Prefix_Bomber <-  Prefix_Bomber %>% unite(MD, prefix,number, sep ="-") %>%  spread(key = "Output", value ="Value")  %>% as_tibble()
+head(Prefix_Bomber)
+
+#Question5
+
+Mess_Bomber <- readRDS("data/bomber_mess.rds")
+#class(Mess_Bomber)
+head(Mess_Bomber)
+Mess_Bomber <- Mess_Bomber %>% as_tibble %>% unite(MD, prefix,number, sep ="-") %>% separate(Metric, into =c("year","FH")) %>% spread(key = "FH", value ="Value") %>% as_tibble()
+
+Mess_Bomber %>% gather(Variables,Value, 4:6) %>% 
+  ggplot(aes(year,Value, group=MD, color=MD)) +
+  geom_point(aes(y=Value, group=MD)) + geom_line() +
+  facet_wrap("Variables", scales = "free_y")
+
+#Question 6
+
+Programmatics_WS <- readRDS("data/ws_programmatics.rds")
+dim(Programmatics_WS)
+
+  Categorization_WS <- readRDS("data/ws_categorizations.rds")
+dim(Categorization_WS)
+Programmatics_WS %>% left_join(Categorization_WS, by=c("Base"="Base", "MD" ="MD")) %>% filter(FY == "2014" & Base =="MINOT AFB (ND)"  & System %in% c("AIRCRAFT", "MISSILES" ))  %>% group_by(System) %>%  summarise(sumofTotal_O.S = sum(Total_O.S), SumofEnd_Strength = sum(End_Strength, na.rm=TRUE))
+
+
+#Question 7
+
+
+Programmatics_WS %>% 
+  left_join(Categorization_WS, by=c("Base"="Base", "MD" ="MD"))%>% filter(FY == "2014") %>%   mutate(CPFH = Total_O.S/FH) %>% group_by(Base) %>% summarise(Mean=mean(CPFH, na.rm=T)) %>% arrange(desc(Mean)) %>%   head(10) %>% ggplot(aes(x=reorder(Base, -Mean), y= Mean)) + geom_bar(stat = "identity") 
+
+
+
+#Question 8
+Programmatics_WS %>%  ggplot( aes(y=End_Strength, x=Total_O.S)) + geom_point(aes(y=End_Strength)) + facet_wrap("FY")
+
+Programmatics_WS %>% 
+  left_join(Categorization_WS, by=c("Base"="Base", "MD" ="MD"))%>% ggplot( aes(y=End_Strength, x=Total_O.S)) + geom_point(aes(y=End_Strength)) + facet_wrap("System")
+
+
+Programmatics_WS %>% 
+  left_join(Categorization_WS, by=c("Base"="Base", "MD" ="MD"))%>% ggplot( aes(y=End_Strength, x=Total_O.S)) + geom_point(aes(y=End_Strength)) + facet_wrap("Base")
+
+
+
+
+```
+

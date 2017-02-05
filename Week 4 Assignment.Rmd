@@ -1,0 +1,126 @@
+---
+title: "Gapminder Exploratory Data Analysis"
+author: "Nidhi-M"
+date: "November 4, 2016"
+output: 
+    prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Synopsis
+
+The purpose of this Markdown file is to get acquainted with various R-Packages like **dplyr**, **ggplot** , **rworldap**, **gapminder**  
+Findings: countries like America and Australia have high GDP per Capita, while Qatar has topped in per capita for 2007. Also majorty of the countries have gdpPerCapita less than 20000. While India is growing over years
+
+## Packages Required
+
+Following are the packages loaded 
+
+```{r message=FALSE, warning=FALSE}
+library(gapminder) ## Getting the Data
+library(rworldmap) ## plotting the data on World Map
+library(countrycode) ## Converting the country name to Country code
+library(dplyr) ## For manipulating, transforming, filtering, summarizing the data
+library(Hmisc)
+library(printr) 
+library(RColorBrewer) ## to chose different colors for the graph
+```
+
+
+## Source Code  
+
+**GapMinder_Unfiltered** is the dataset which has gdpPerCapita (Gross Domestic Product per Capita)
+across the countries in the globe collected over years dating 1950 to 2007   
+Following are the variables in the dataset:  
+1. **Country** : Names of the countries  
+2. **Continent** : Name of the continent the country belongs to   
+3. **Year** : year for which this observation is collected  
+4. **LifeExp** : Life Expectency for people in that country  
+5. **Pop**  : Population for that country in that year  
+6. **gdpPerCap** : It is the gdp Per capita ( gross domestic product divided by the population)
+
+
+## Data Description
+```{r}
+dim(gapminder_unfiltered)
+colnames(gapminder_unfiltered)
+sum(complete.cases(gapminder)) ## No missing values found
+describe(gapminder_unfiltered) # getting the summary statistics for gapminder_unfiltered data
+```
+
+
+## Exploratory Data Analysis {.tabset}
+
+Some of the Questions are answered 
+
+### For the year 2007, what is the distribution of GDP per capita across all countries?
+```{r warning=FALSE, message=FALSE}
+gapminder <-  gapminder_unfiltered
+gapminder$countrycode <- countrycode(gapminder$country, 'country.name', 'iso3c')
+  
+sPDF <- joinCountryData2Map(gapminder %>% filter(year == 2007)
+                              ,joinCode = "ISO3"
+                              ,nameJoinColumn = "countrycode"
+                              ,mapResolution = "coarse"
+                              , verbose = T)
+colourPalette <- brewer.pal(7,'GnBu')
+
+mapParams <- mapCountryData(sPDF,
+                            nameColumnToPlot="gdpPercap",
+                            addLegend=FALSE,
+                            colourPalette=colourPalette )
+
+do.call(addMapLegend
+        ,c(mapParams
+           ,legendLabels="all"
+           ,legendWidth=0.5
+           ,legendIntervals="data"
+           ,legendMar = 2))
+
+gap2007 <- gapminder %>% filter(year == 2007)
+ggplot(data=gap2007, aes(gap2007$gdpPercap)) + geom_histogram(fill = '#1ABC9C')
+```
+
+
+### For the year 2007, how do the distributions differ across the different continents?
+
+```{r warning=FALSE}
+ggplot(gap2007,aes(gap2007$gdpPercap)) + geom_histogram(fill = '#1ABC9C')+ 
+  facet_wrap(~continent, scales='free') + stat_bin(breaks=10, binwidth = 1000 )
+
+```
+
+### For the year 2007, what are the top 10 countries with the largest GDP per capita?
+```{r warning=FALSE}
+gap2007 %>% arrange(-gdpPercap) %>% head(10) %>% select(country, gdpPercap)
+```
+
+
+### Plot the GDP per capita for your country of origin for all years available.
+```{r warning=FALSE}
+gapminder %>% filter(country =='India') %>%  ggplot(.,aes(x =year, y= gdpPercap)) +
+  geom_line(color ='#1ABC9C') + geom_point(color='#21618C')
+# grid.arrange(gp, ncol=3, nrow =2)
+```
+
+
+### What was the percent growth (or decline) in GDP per capita in 2007?
+```{r warning=FALSE}
+gapminder %>% filter(country =='India') %>%  mutate(PercentGrowth =
+                  (gdpPercap - lag(gdpPercap))*100/lag(gdpPercap)) %>% 
+  arrange(-PercentGrowth) %>% head(1)
+```
+
+### What has been the historical growth (or decline) in GDP per capita for your country?
+
+```{r warning=FALSE}
+gapminder %>% filter(country =='India') %>% 
+           mutate(PercentGrowth = (gdpPercap - lag(gdpPercap))*100/lag(gdpPercap)) %>% 
+           ggplot(.,aes(x=year, y=PercentGrowth)) + geom_line(color ='#1ABC9C') + geom_point(color='#21618C')
+```
+

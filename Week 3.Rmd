@@ -1,0 +1,103 @@
+---
+title: "Week 3 - Cincinnati Weather Analysis"
+author: "Nidhi-M"
+date: "October 29, 2016"
+output: html_document
+---
+
+## Synopsis
+
+Analysis of Temperature for days in all the months for years from 1995 to present is done in this document.  
+1. It is found that a lot of variation in temperature is seen in months for January anf February for over years  
+2. Year 1996 & 2014 has seen most extreme temperature on the lower end while Years 1997 & 2012 has seen extremes in Upper end
+
+## Packages Required & Data Collection
+
+```{r message=FALSE}
+library(ggplot2)
+library(knitr)
+Weather <- read.table("http://academic.udayton.edu/kissock/http/Weather/gsod95-current/OHCINCIN.txt", col.names = c("Month","Day", "Year", "Temperature")) ## Try using Read_table and read_fwfq
+```
+## Source Code
+The Data contains Temperature for Cincinnati, Ohio for every day in a month from 1995 to 2016.
+Text file downloaded is present [here](http://academic.udayton.edu/kissock/http/Weather/gsod95-current/OHCINCIN.txt).
+Columns include Month, Day, Year and Temperature in Fahrenheit
+
+## Data Description
+
+
+```{r}
+colnames(Weather); 
+nrow(Weather)
+str(Weather)
+Weather[Weather$Temperature == -99, 4] <-  NA
+sum(is.na(Weather$Temperature)) ##which to see any patterns in the indexes of the missing value
+summary(Weather)
+
+```
+
+
+## Data Visualization {.tabset}
+
+### Monthly Analysis
+```{r warning=FALSE}
+ggplot(data = Weather) +
+  geom_point(mapping = aes(x = Day, y = Temperature )) +
+  facet_grid(. ~ Month) + 
+  ylab("Temperature in Fahrenheit")  +
+  labs(title = "Monthly trend and Variation over years")
+##Replace the NA with with mean of 3 days after and before day, why 3 as there were 2 consecutive days missing
+## mention what have done with the missing values 
+##Hmiec package descibe
+## ggplot works well with date string
+## get the unique values
+##table fror the years , month
+## Convert it to categorical value
+##Luber day package for dates
+##month.abb
+
+##factor(monthabb[temp_df$Month], levels = month.abb)
+##order will the index and sort will give the valus 
+##ggplot
+##Heat map
+##compare with otger city
+##jitter
+```
+      
+      
+### Yearly Anlaysis
+```{r}
+boxplot(Temperature~Year,
+        data=Weather,
+        main="Temperature Yearly Plot", 
+        xlab="Years", ylab="Temperature in Fahrenheit")
+
+```
+    
+
+### Averages
+```{r}
+MeanMonthlyTemperature <- aggregate( x=Weather, 
+                                     by = list( Weather$Year ,Weather$Month), 
+                                     FUN = mean, na.rm=TRUE)
+colors <- rainbow(22)
+Years <- 1995:2016
+plot(MeanMonthlyTemperature[MeanMonthlyTemperature$Year == 1995, 6],
+     type = "l",
+     col = colors[1] , 
+     xlab = "Month", 
+     ylab = "Average Temperature in Fahrenheit", 
+     main = "Average trends for months over year")
+for ( i in 2:22)
+  lines(MeanMonthlyTemperature[MeanMonthlyTemperature$Year == Years[i], 6],type = "l",col = colors[i])
+#legend("bottom", legend = c("1995","1996", 1997:2016),  col = rainbow(22) )
+```
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,43 @@
+---
+title: "Homework - Week 2"
+author: "Nidhi-M"
+date: "October 20, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### What is the purpose of R Markdown?
+
+R-Markdown is a easy option to present your work, integrate code in the report, Therefore a powerful tool for story telling.  
+It makes your research reproducible everytime. While markdown can be used to create reports in HTML, PDF & WORD formats
+
+```{r warning=FALSE, message=FALSE}
+library(gdata) ## A package that can be used to read and manipulate the data
+library(base) ## A package that  contains the basic functions which let R function as a language: arithmetic, input/output, basic programming support, etc. Its contents are available through inheritance from any environment.
+library(knitr) ##It is a package in the statistical programming language R that enables integration of R code into LaTeX, LyX, HTML, Markdown, AsciiDoc, and reStructuredText documents.
+library(xtable) ## convert a  r object to html or laTex table
+```
+
+```{r }
+colnames(Temperature)
+nrow(Temperature)
+Temperature[Temperature$Temperature == -99, 4] <-  NA
+sum(is.na(Temperature$Temperature))
+summary(Temperature)
+```
+
+```{r codechunk1, cache=TRUE}
+
+```
+
+```{r codechunk2}
+
+```
+
+
+
+
+
